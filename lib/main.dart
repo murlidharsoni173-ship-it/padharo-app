@@ -349,10 +349,10 @@ class GuideProfileScreen extends StatelessWidget {
                 children: const [
                   Text('Bill Breakdown', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
                   SizedBox(height: 8),
-                  Row(mainAxisAlignment: Mainbetween, children: [Text('2 Hrs (₹450/hr)', style: TextStyle(color: Colors.black70)), Text('₹900', style: TextStyle(color: Colors.black))]),
-                  Row(mainAxisAlignment: Mainbetween, children: [Text('Platform Fee', style: TextStyle(color: Colors.black70)), Text('₹50', style: TextStyle(color: Colors.black))]),
+                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween.spaceBetween  ,.spaceBetween children: [Text('2 Hrs (₹450/hr)', style: TextStyle(color: Colors.black54)), Text('₹900', style: TextStyle(color: Colors.black))]),
+                  Row(mainAxisAlignment:MainAxisAlignment , children: [Text('Platform Fee', style: TextStyle(color: Colors.black54)), Text('₹50', style: TextStyle(color: Colors.black))]),
                   Divider(),
-                  Row(mainAxisAlignment: Mainbetween, children: [Text('Total Amount', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)), Text('₹950', style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF008B47)))]),
+                  Row(mainAxisAlignment:MainAxisAlignment , children: [Text('Total Amount', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)), Text('₹950', style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF008B47)))]),
                 ],
               ),
             ),
