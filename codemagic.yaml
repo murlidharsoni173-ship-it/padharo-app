@@ -1,3 +1,4 @@
+Yap
 workflows:
   android-build:
     name: Android APK Build
@@ -5,9 +6,11 @@ workflows:
     environment:
       flutter: stable
     scripts:
-      - name: Create Android folder
+      - name: Setup Android platform
         script: flutter create --platforms=android .
-      - name: Build APK
-        script: flutter build apk --release
+      - name: Pub get packages
+        script: flutter pub get
+      - name: Build release APK
+        script: flutter build apk --release --no-pub
     artifacts:
       - build/app/outputs/flutter-apk/*.apk
