@@ -1,155 +1,6 @@
-import 'package:flutter/material.dart';
-
-void main() {
-  runApp(const PadharoApp());
-}
-
-class PadharoApp extends StatelessWidget {
-  const PadharoApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Padharo',
-      theme: ThemeData(
-        scaffoldBackgroundColor: const Color(0xFF0A1B17),
-        primaryColor: const Color(0xFF008B47),
-        colorScheme: const ColorScheme.dark(
-          primary: Color(0xFF008B47),
-          secondary: Color(0xFFD4AF37),
-          surface: Color(0xFF0A1B17),
-        ),
-      ),
-      home: const MainNavigationScreen(),
-    );
-  }
-}
-
-class MainNavigationScreen extends StatefulWidget {
-  const MainNavigationScreen({super.key});
-
-  @override
-  State<MainNavigationScreen> createState() => _MainNavigationScreenState();
-}
-
-class _MainNavigationScreenState extends State<MainNavigationScreen> {
-  int _currentIndex = 0;
-
-  final List<Widget> _screens = const [
-    LoginScreen(),
-    HomeScreen(),
-    GuideProfileScreen(),
-    ActiveTourScreen(),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _screens,
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (index) => setState(() => _currentIndex = index),
-        backgroundColor: const Color(0xFF0A1B17),
-        selectedItemColor: const Color(0xFFD4AF37),
-        unselectedItemColor: Colors.white54,
-        type: BottomNavigationBarType.fixed,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.login), label: 'Login'),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Guide'),
-          BottomNavigationBarItem(icon: Icon(Icons.navigation), label: 'Active'),
-        ],
-      ),
-    );
-  }
-}
-
-// -----------------------------------------------------------------------------
-// SCREEN 1: SPLASH & LOGIN
-// -----------------------------------------------------------------------------
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          // Background Overlay
-          Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color(0xFF0A1B17), Color(0xEE0A1B17)],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Spacer(),
-                const Icon(Icons.account_balance, size: 80, color: Color(0xFFD4AF37)),
-                const SizedBox(height: 12),
-                const Text(
-                  'PADHARO',
-                  style: TextStyle(
-                    fontSize: 36,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFFD4AF37),
-                    letterSpacing: 3,
-                  ),
-                ),
-                const Text(
-                  'Explore India Authentically',
-                  style: TextStyle(color: Colors.white70, fontSize: 14),
-                ),
-                const Spacer(),
-                TextField(
-                  style: const TextStyle(color: Colors.black),
-                  decoration: InputDecoration(
-                    prefixIcon: const Padding(
-                      padding: EdgeInsets.all(12.0),
-                      child: Text('🇮🇳 +91', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
-                    ),
-                    hintText: 'Enter Mobile Number',
-                    hintStyle: const TextStyle(color: Colors.grey),
-                    filled: true,
-                    fillColor: Colors.white,
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF008B47),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                    ),
-                    onPressed: () {},
-                    child: const Text('Get OTP', style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold)),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                const Text('OR', style: TextStyle(color: Colors.white38)),
-                const SizedBox(height: 20),
-                OutlinedButton.icon(
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    side: const BorderSide(color: Colors.white24),
-                    minimumSize: const Size(double.infinity, 50),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                  ),
-                  onPressed: () {},
-                  icon: const Icon(Icons.g_mobiledata, size: 28),
+     : 12),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(colorg_mobiledata, size: 28),
                   label: const Text('Continue with Google'),
                 ),
                 const SizedBox(height: 40),
@@ -266,9 +117,7 @@ class GuideCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16)),
+      margin: const EdgeInsets.only(bottom: Colors.white, borderRadius: BorderRadius.circular(16)),
       child: Row(
         children: [
           const CircleAvatar(radius: 30, backgroundColor: Color(0xFF0A1B17), child: Icon(Icons.person, color: Colors.white)),
@@ -506,4 +355,4 @@ class MetricItem extends StatelessWidget {
       ],
     );
   }
-}
+             
