@@ -350,8 +350,8 @@ class MetricItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(label, style: const TextStyle(fontSize: 10, color: Colors.grey)),
-        Text(value, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+        Text(label, style:  TextStyle(fontSize: 10, color: Colors.grey)),
+        Text(value, style:  TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
       ],
     );
   }
