@@ -14,7 +14,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0F251F), // Ek rich dark green tourism theme color
+      backgroundColor: const Color(0xFF0F251F),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -27,7 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 style: TextStyle(
                   fontSize: 36,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFFD4AF37), // Gold accent
+                  color: Color(0xFFD4AF37),
                   letterSpacing: 2.0,
                 ),
               ),
@@ -79,13 +79,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   onPressed: () {
-                    // Test karne ke liye seedha Dashboard par le jayega
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => const HomeDashboardScreen()),
                     );
                   },
-                  const Text(
+                  child: const Text(
                     'Get OTP / Continue',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
                   ),
