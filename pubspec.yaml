@@ -9,7 +9,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-flutter:
-  uses-material-design: true
-
+  firebase_core: ^2.24.2
+  firebase_auth: ^4.17.8
+  google_sign_in: ^6.2.1
