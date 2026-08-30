@@ -4,7 +4,7 @@ import 'login_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(); // Firebase initialize ho raha hai
+  (); // Firebase initialize ho raha hai
   runApp(const MyApp());
 }
 
