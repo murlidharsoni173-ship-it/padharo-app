@@ -1,11 +1,64 @@
 import 'package:flutter/material.dart';
 import 'guide_detail_screen.dart';
 
-class HomeDashboardScreen extends StatelessWidget {
+class HomeDashboardScreen extends StatefulWidget {
   const HomeDashboardScreen({Key? key}) : super(key: key);
 
   @override
+  State<HomeDashboardScreen> createState() => _HomeDashboardScreenState();
+}
+
+class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
+  String _selectedCategory = 'All'; // Default 'All' rakha hai
+  String _searchQuery = '';
+  final TextEditingController _searchController = TextEditingController();
+
+  // Guides ka Dummy Data (Backend se aane wala data aisa hi dikhega)
+  final List<Map<String, String>> _allGuides = [
+    {
+      'name': 'Ramesh',
+      'rating': '4.9',
+      'reviews': '(128 Reviews)',
+      'specialty': 'Heritage Expert',
+      'category': 'Heritage',
+      'price': '₹450/hr',
+    },
+    {
+      'name': 'Priya',
+      'rating': '4.8',
+      'reviews': '(98 Reviews)',
+      'specialty': 'Local Markets',
+      'category': 'Shopping',
+      'price': '₹400/hr',
+    },
+    {
+      'name': 'Vikram',
+      'rating': '4.7',
+      'reviews': '(85 Reviews)',
+      'specialty': 'Street Food Guru',
+      'category': 'Food',
+      'price': '₹350/hr',
+    },
+    {
+      'name': 'Neha',
+      'rating': '4.9',
+      'reviews': '(112 Reviews)',
+      'specialty': 'Nightlife Guide',
+      'category': 'Night Vibe',
+      'price': '₹500/hr',
+    },
+  ];
+
+  @override
   Widget build(BuildContext context) {
+    // 🔍 Yahan Filter aur Search ka jaadu chal raha hai
+    List<Map<String, String>> filteredGuides = _allGuides.where((guide) {
+      bool matchesCategory = _selectedCategory == 'All' || guide['category'] == _selectedCategory;
+      bool matchesSearch = guide['name']!.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+                           guide['specialty']!.toLowerCase().contains(_searchQuery.toLowerCase());
+      return matchesCategory && matchesSearch;
+    }).toList();
+
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
       appBar: AppBar(
@@ -43,9 +96,15 @@ class HomeDashboardScreen extends StatelessWidget {
                   BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10),
                 ],
               ),
-              child: const TextField(
-                decoration: InputDecoration(
-                  hintText: 'Search Monuments, Food Spots...',
+              child: TextField(
+                controller: _searchController,
+                onChanged: (value) {
+                  setState(() {
+                    _searchQuery = value; // Type karte hi list update hogi
+                  });
+                },
+                decoration: const InputDecoration(
+                  hintText: 'Search Guide or Specialty...',
                   prefixIcon: Icon(Icons.search, color: Colors.grey),
                   border: InputBorder.none,
                 ),
@@ -53,14 +112,14 @@ class HomeDashboardScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
 
-            // Categories
-            const Row(
+            // Categories (Clickable)
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                CategoryItem(icon: Icons.account_balance, label: 'Heritage'),
-                CategoryItem(icon: Icons.restaurant, label: 'Food'),
-                CategoryItem(icon: Icons.shopping_bag, label: 'Shopping'),
-                CategoryItem(icon: Icons.nightlife, label: 'Night Vibe'),
+                _buildCategoryItem(Icons.account_balance, 'Heritage'),
+                _buildCategoryItem(Icons.restaurant, 'Food'),
+                _buildCategoryItem(Icons.shopping_bag, 'Shopping'),
+                _buildCategoryItem(Icons.nightlife, 'Night Vibe'),
               ],
             ),
             const SizedBox(height: 24),
@@ -74,29 +133,44 @@ class HomeDashboardScreen extends StatelessWidget {
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF0F251F)),
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    // Reset sab kuch
+                    setState(() {
+                      _selectedCategory = 'All';
+                      _searchController.clear();
+                      _searchQuery = '';
+                    });
+                  },
                   child: const Text('View All', style: TextStyle(color: Color(0xFF1B4D3E), fontWeight: FontWeight.bold)),
                 ),
               ],
             ),
             const SizedBox(height: 12),
 
-            // Guides List
-            const GuideCard(
-              name: 'Ramesh',
-              rating: '4.9',
-              reviews: '(128 Reviews)',
-              specialty: 'Heritage Expert',
-              price: '₹450/hr',
-            ),
-            const SizedBox(height: 12),
-            const GuideCard(
-              name: 'Priya',
-              rating: '4.8',
-              reviews: '(98 Reviews)',
-              specialty: 'Local Markets',
-              price: '₹400/hr',
-            ),
+            // Filtered Guides List Loop
+            if (filteredGuides.isEmpty)
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 40.0),
+                child: Center(
+                  child: Text(
+                    'No guides found!',
+                    style: TextStyle(color: Colors.grey, fontSize: 16, fontWeight: FontWeight.w500),
+                  ),
+                ),
+              )
+            else
+              ...filteredGuides.map((guide) {
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 12.0),
+                  child: GuideCard(
+                    name: guide['name']!,
+                    rating: guide['rating']!,
+                    reviews: guide['reviews']!,
+                    specialty: guide['specialty']!,
+                    price: guide['price']!,
+                  ),
+                );
+              }).toList(),
           ],
         ),
       ),
@@ -115,33 +189,50 @@ class HomeDashboardScreen extends StatelessWidget {
       ),
     );
   }
-}
 
-class CategoryItem extends StatelessWidget {
-  final IconData icon;
-  final String label;
-
-  const CategoryItem({Key? key, required this.icon, required this.label}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: const Color(0xFFFFF8E7),
-            borderRadius: BorderRadius.circular(16),
+  // Yahan se Categories ka design aur click event handle hoga
+  Widget _buildCategoryItem(IconData icon, String label) {
+    bool isSelected = _selectedCategory == label;
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          // Agar dobara same pe click kiya toh filter hat jayega
+          _selectedCategory = isSelected ? 'All' : label;
+        });
+      },
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: isSelected ? const Color(0xFF1B4D3E) : const Color(0xFFFFF8E7),
+              borderRadius: BorderRadius.circular(16),
+              border: isSelected ? Border.all(color: const Color(0xFFD4AF37), width: 2) : null,
+            ),
+            child: Icon(
+              icon,
+              color: const Color(0xFFD4AF37),
+              size: 28,
+            ),
           ),
-          child: Icon(icon, color: const Color(0xFFD4AF37), size: 28),
-        ),
-        const SizedBox(height: 6),
-        Text(label, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 12)),
-      ],
+          const SizedBox(height: 6),
+          Text(
+            label,
+            style: TextStyle(
+              fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
+              fontSize: 12,
+              color: isSelected ? const Color(0xFF1B4D3E) : Colors.black,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
 
+// ----------------------------------------------------
+// GuideCard Widget (Bilkul same as before)
+// ----------------------------------------------------
 class GuideCard extends StatelessWidget {
   final String name;
   final String rating;
@@ -206,7 +297,6 @@ class GuideCard extends StatelessWidget {
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                 ),
                 onPressed: () {
-                  // Direct Booking Screen opening logic added here:
                   Navigator.push(
                     context,
                     MaterialPageRoute(
