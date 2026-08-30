@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'guide_detail_screen.dart';
 import 'profile_screen.dart';
+import 'explore_screen.dart';
 
 class HomeDashboardScreen extends StatefulWidget {
   const HomeDashboardScreen({Key? key}) : super(key: key);
@@ -174,7 +175,12 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
         currentIndex: 0,
         type: BottomNavigationBarType.fixed,
         onTap: (index) {
-          if (index == 4) {
+          if (index == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ExploreScreen()),
+            );
+          } else if (index == 4) {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const ProfileScreen()),
