@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'guide_detail_screen.dart';
+import 'profile_screen.dart';
 
 class HomeDashboardScreen extends StatefulWidget {
   const HomeDashboardScreen({Key? key}) : super(key: key);
@@ -9,11 +10,10 @@ class HomeDashboardScreen extends StatefulWidget {
 }
 
 class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
-  String _selectedCategory = 'All'; // Default 'All' rakha hai
+  String _selectedCategory = 'All';
   String _searchQuery = '';
   final TextEditingController _searchController = TextEditingController();
 
-  // Guides ka Dummy Data (Backend se aane wala data aisa hi dikhega)
   final List<Map<String, String>> _allGuides = [
     {
       'name': 'Ramesh',
@@ -51,7 +51,6 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // 🔍 Yahan Filter aur Search ka jaadu chal raha hai
     List<Map<String, String>> filteredGuides = _allGuides.where((guide) {
       bool matchesCategory = _selectedCategory == 'All' || guide['category'] == _selectedCategory;
       bool matchesSearch = guide['name']!.toLowerCase().contains(_searchQuery.toLowerCase()) ||
@@ -86,7 +85,6 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Search Bar
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12),
               decoration: BoxDecoration(
@@ -100,7 +98,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
                 controller: _searchController,
                 onChanged: (value) {
                   setState(() {
-                    _searchQuery = value; // Type karte hi list update hogi
+                    _searchQuery = value;
                   });
                 },
                 decoration: const InputDecoration(
@@ -112,7 +110,6 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
             ),
             const SizedBox(height: 20),
 
-            // Categories (Clickable)
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -124,7 +121,6 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
             ),
             const SizedBox(height: 24),
 
-            // Section Header
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -134,7 +130,6 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
                 ),
                 TextButton(
                   onPressed: () {
-                    // Reset sab kuch
                     setState(() {
                       _selectedCategory = 'All';
                       _searchController.clear();
@@ -147,7 +142,6 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
             ),
             const SizedBox(height: 12),
 
-            // Filtered Guides List Loop
             if (filteredGuides.isEmpty)
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: 40.0),
@@ -179,6 +173,14 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
         unselectedItemColor: Colors.grey,
         currentIndex: 0,
         type: BottomNavigationBarType.fixed,
+        onTap: (index) {
+          if (index == 4) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ProfileScreen()),
+            );
+          }
+        },
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.explore), label: 'Explore'),
@@ -190,13 +192,11 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
     );
   }
 
-  // Yahan se Categories ka design aur click event handle hoga
   Widget _buildCategoryItem(IconData icon, String label) {
     bool isSelected = _selectedCategory == label;
     return GestureDetector(
       onTap: () {
         setState(() {
-          // Agar dobara same pe click kiya toh filter hat jayega
           _selectedCategory = isSelected ? 'All' : label;
         });
       },
@@ -230,9 +230,6 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
   }
 }
 
-// ----------------------------------------------------
-// GuideCard Widget (Bilkul same as before)
-// ----------------------------------------------------
 class GuideCard extends StatelessWidget {
   final String name;
   final String rating;
