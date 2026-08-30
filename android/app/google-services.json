@@ -1,0 +1,43 @@
+{
+
+"project_info": {
+
+"project_number": "111984490782",
+
+"project_id": "padharo-app"
+
+"storage_bucket": "padharo-app.firebasestorage.app"
+
+"client": [ {
+
+},
+
+"mobilesdk_app_id": "1:111984490782:android: 2d9abca5714118ec2a710f",
+
+"client_info": {
+
+"android_client_info": adharo "package_name": "com.padharo.tourism"
+
+}
+
+"oauth_client": [],
+
+"api_key": [
+
+}
+
+{
+
+"current_key": "AIzaSyDL-8AylxHSKGhv6Dnrkbxg8-Gnx2M0CR0"
+
+}
+
+'services": {
+
+"appinvite_service":{
+
+}
+
+"other_platform_oauth_client": []
+
+1. "configuration_version": "1"
