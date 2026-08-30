@@ -1,9 +1,77 @@
-fontSize: 16,
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Padharo App',
+      theme: ThemeData(
+        primarySwatch: Colors.deepOrange,
+        scaffoldBackgroundColor: const Color(0xFFF8F9FA),
+      ),
+      home: const HomeScreen(),
+    );
+  }
+}
+
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.deepOrange,
+        title: const Text(
+          'Padharo - Tourism & Travel',
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.notifications_outlined, color: Colors.white),
+            onPressed: () {},
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Tourism Banner Section
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Colors.deepOrange, Colors.amber],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Padharo Mhare Desh! 🐪',
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                   SizedBox(height: 8),
                   Text(
-                    'Book Best Sound & Event Setups',
+                    'Explore Best Tourist Places & Bookings',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 22,
@@ -17,7 +85,7 @@ fontSize: 16,
 
             // Section Title
             const Text(
-              'Active Bookings & Pricing',
+              'Popular City Tour Packages',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -26,7 +94,7 @@ fontSize: 16,
             ),
             const SizedBox(height: 12),
 
-            // Professional Booking Card
+            // Tour Booking Card
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -48,7 +116,7 @@ fontSize: 16,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: const [
                       Text(
-                        '2 Hrs Setup (₹450/hr)',
+                        'Jaipur Sightseeing (2 Hrs)',
                         style: TextStyle(
                           color: Colors.black54,
                           fontSize: 14,
@@ -60,7 +128,7 @@ fontSize: 16,
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: Colors.deepPurple,
+                          color: Colors.deepOrange,
                         ),
                       ),
                     ],
@@ -99,4 +167,3 @@ fontSize: 16,
     );
   }
 }
-                      
