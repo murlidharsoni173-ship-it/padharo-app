@@ -1,71 +1,4 @@
-import 'package:flutter/material.dart';
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Padharo App',
-      theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
-        scaffoldBackgroundColor: const Color(0xFFF8F9FA),
-      ),
-      home: const HomeScreen(),
-    );
-  }
-}
-
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.deepPurple,
-        title: const Text(
-          'Padharo App',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications_outlined, color: Colors.white),
-            onPressed: () {},
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Banner Section
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Colors.deepPurple, Colors.purpleAccent],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Welcome Back! 👋',
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 16,
+fontSize: 16,
                     ),
                   ),
                   SizedBox(height: 8),
@@ -166,3 +99,4 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
+                      
