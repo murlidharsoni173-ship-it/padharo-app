@@ -2,17 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'home_dashboard_screen.dart';
 
-void main() async {
-  // Flutter bindings ko screen render hone se pehle initialize karta hai
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  // Firebase initialization handle karne ke liye try-catch block
-  try {
-    await Firebase.initializeApp();
-  } catch (e) {
-    debugPrint("Firebase Initialization Error: $e");
-  }
-
   runApp(const MyApp());
 }
 
@@ -29,7 +20,53 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF1B4D3E)),
         useMaterial3: true,
       ),
-      home: const HomeDashboardScreen(),
+      home: const FirebaseInitWrapper(),
+    );
+  }
+}
+
+class FirebaseInitWrapper extends StatefulWidget {
+  const FirebaseInitWrapper({Key? key}) : super(key: key);
+
+  @override
+  State<FirebaseInitWrapper> createState() => _FirebaseInitWrapperState();
+}
+
+class _FirebaseInitWrapperState extends State<FirebaseInitWrapper> {
+  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: _initialization,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Scaffold(
+            backgroundColor: Colors.white,
+            body: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Text(
+                  'Firebase Error:\n${snapshot.error}',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: Colors.red, fontSize: 16),
+                ),
+              ),
+            ),
+          );
+        }
+
+        if (snapshot.connectionState == ConnectionState.done) {
+          return const HomeDashboardScreen();
+        }
+
+        return const Scaffold(
+          backgroundColor: Colors.white,
+          body: Center(
+            child: CircularProgressIndicator(color: Color(0xFF1B4D3E)),
+          ),
+        );
+      },
     );
   }
 }
