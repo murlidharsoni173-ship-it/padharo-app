@@ -1,0 +1,281 @@
+import 'package:flutter/material.dart';
+
+class GuideProfileScreen extends StatefulWidget {
+  const GuideProfileScreen({Key? key}) : super(key: key);
+
+  @override
+  State<GuideProfileScreen> createState() => _GuideProfileScreenState();
+}
+
+class _GuideProfileScreenState extends State<GuideProfileScreen> {
+  String selectedTourSize = 'Solo/Couple';
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFFF9F9F9),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.black87),
+          onPressed: () => Navigator.pop(context),
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.share, color: Colors.black87),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: const Icon(Icons.favorite_border, color: Colors.black87),
+            onPressed: () {},
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Guide Photo / Banner Placeholder
+            Container(
+              height: 200,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: const Center(
+                child: Icon(Icons.person, size: 80, color: Colors.grey),
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            // Guide Name & Rating
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Ramesh Kumar',
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black87),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: Colors.amber.shade50,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: Colors.amber.shade200),
+                  ),
+                  child: Row(
+                    children: const [
+                      Icon(Icons.star, color: Colors.amber, size: 16),
+                      SizedBox(width: 4),
+                      Text('4.9 (128 Reviews)', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+
+            // Govt Certified Badge & Languages
+            Row(
+              children: const [
+                Icon(Icons.verified, color: Colors.green, size: 18),
+                SizedBox(width: 4),
+                Text('Govt. Certified Guide', style: TextStyle(color: Colors.green, fontWeight: FontWeight.w600, fontSize: 13)),
+              ],
+            ),
+            const SizedBox(height: 6),
+            const Text(
+              '🗣️ Languages: Hindi, English, Spanish',
+              style: TextStyle(color: Colors.black54, fontSize: 13),
+            ),
+            const SizedBox(height: 20),
+
+            // Tour Size Selector
+            const Text(
+              'Tour Size',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black87),
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TourSizeOption(
+                  title: 'Solo/Couple',
+                  isSelected: selectedTourSize == 'Solo/Couple',
+                  onTap: () => setState(() => selectedTourSize = 'Solo/Couple'),
+                ),
+                TourSizeOption(
+                  title: 'Family (3-5)',
+                  isSelected: selectedTourSize == 'Family (3-5)',
+                  onTap: () => setState(() => selectedTourSize = 'Family (3-5)'),
+                ),
+                TourSizeOption(
+                  title: 'Group (6+)',
+                  isSelected: selectedTourSize == 'Group (6+)',
+                  onTap: () => setState(() => selectedTourSize = 'Group (6+)'),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+
+            // Select Time Slot Box
+            const Text(
+              'Select Time',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black87),
+            ),
+            const SizedBox(height: 10),
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.grey.shade300),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const [
+                  Row(
+                    children: [
+                      Icon(Icons.calendar_today, color: Color(0xFF1B4D3E), size: 20),
+                      SizedBox(width: 12),
+                      Text('Pick Date & Slot', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+                    ],
+                  ),
+                  Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            // Bill Breakdown Container
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.08),
+                    spreadRadius: 2,
+                    blurRadius: 6,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Bill Breakdown', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 10),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('2 Hrs (₹450/hr)', style: TextStyle(color: Colors.black54, fontSize: 13)),
+                      Text('₹900', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13)),
+                    ],
+                  ),
+                  const SizedBox(height: 6),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Platform Fee', style: TextStyle(color: Colors.black54, fontSize: 13)),
+                      Text('₹50', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13)),
+                    ],
+                  ),
+                  const Divider(height: 20),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Total Amount', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                      Text('₹950', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Color(0xFF1B4D3E))),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 24),
+
+            // Secure Checkout Button
+            SizedBox(
+              width: double.infinity,
+              height: 52,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF1B4D3E),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                ),
+                onPressed: () {},
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(Icons.lock, size: 18, color: Colors.white),
+                    SizedBox(width: 8),
+                    Text(
+                      'Pay Securely (Escrow)',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            const Center(
+              child: Text(
+                'Safe • Secure • Trusted',
+                style: TextStyle(color: Colors.grey, fontSize: 11),
+              ),
+            ),
+            const SizedBox(height: 20),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// Widget for Tour Size Toggle Option
+class TourSizeOption extends StatelessWidget {
+  const TourSizeOption({
+    Key? key,
+    required this.title,
+    required this.isSelected,
+    required this.onTap,
+  }) : super(key: key);
+
+  final String title;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 4),
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          decoration: BoxDecoration(
+            color: isSelected ? const Color(0xFF1B4D3E) : Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: isSelected ? const Color(0xFF1B4D3E) : Colors.grey.shade300,
+            ),
+          ),
+          child: Center(
+            child: Text(
+              title,
+              style: TextStyle(
+                color: isSelected ? Colors.white : Colors.black87,
+                fontWeight: FontWeight.w600,
+                fontSize: 12,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
