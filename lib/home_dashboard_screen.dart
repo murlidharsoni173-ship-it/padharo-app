@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'guide_detail_screen.dart';
 import 'profile_screen.dart';
 import 'explore_screen.dart';
@@ -16,50 +17,8 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
   String _searchQuery = '';
   final TextEditingController _searchController = TextEditingController();
 
-  final List<Map<String, String>> _allGuides = [
-    {
-      'name': 'Ramesh',
-      'rating': '4.9',
-      'reviews': '(128 Reviews)',
-      'specialty': 'Heritage Expert',
-      'category': 'Heritage',
-      'price': '₹450/hr',
-    },
-    {
-      'name': 'Priya',
-      'rating': '4.8',
-      'reviews': '(98 Reviews)',
-      'specialty': 'Local Markets',
-      'category': 'Shopping',
-      'price': '₹400/hr',
-    },
-    {
-      'name': 'Vikram',
-      'rating': '4.7',
-      'reviews': '(85 Reviews)',
-      'specialty': 'Street Food Guru',
-      'category': 'Food',
-      'price': '₹350/hr',
-    },
-    {
-      'name': 'Neha',
-      'rating': '4.9',
-      'reviews': '(112 Reviews)',
-      'specialty': 'Nightlife Guide',
-      'category': 'Night Vibe',
-      'price': '₹500/hr',
-    },
-  ];
-
   @override
   Widget build(BuildContext context) {
-    List<Map<String, String>> filteredGuides = _allGuides.where((guide) {
-      bool matchesCategory = _selectedCategory == 'All' || guide['category'] == _selectedCategory;
-      bool matchesSearch = guide['name']!.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-                           guide['specialty']!.toLowerCase().contains(_searchQuery.toLowerCase());
-      return matchesCategory && matchesSearch;
-    }).toList();
-
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
       appBar: AppBar(
@@ -144,29 +103,71 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
             ),
             const SizedBox(height: 12),
 
-            if (filteredGuides.isEmpty)
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 40.0),
-                child: Center(
-                  child: Text(
-                    'No guides found!',
-                    style: TextStyle(color: Colors.grey, fontSize: 16, fontWeight: FontWeight.w500),
-                  ),
-                ),
-              )
-            else
-              ...filteredGuides.map((guide) {
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 12.0),
-                  child: GuideCard(
-                    name: guide['name']!,
-                    rating: guide['rating']!,
-                    reviews: guide['reviews']!,
-                    specialty: guide['specialty']!,
-                    price: guide['price']!,
-                  ),
+            StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance.collection('guides').snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    padding: EdgeInsets.symmetric(vertical: 40),
+                    child: CircularProgressIndicator(color: Color(0xFF1B4D3E)),
+                  );
+                }
+
+                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                  return const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 40.0),
+                    child: Center(
+                      child: Text(
+                        'No guides available in database!',
+                        style: TextStyle(color: Colors.grey, fontSize: 16),
+                      ),
+                    ),
+                  );
+                }
+
+                var guideDocs = snapshot.data!.docs;
+
+                var filteredDocs = guideDocs.where((doc) {
+                  var data = doc.data() as Map<String, dynamic>;
+                  String name = data['name'] ?? '';
+                  String category = data['category'] ?? '';
+                  String specialty = data['specialty'] ?? '';
+
+                  bool matchesCategory = _selectedCategory == 'All' || category == _selectedCategory;
+                  bool matchesSearch = name.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+                                       specialty.toLowerCase().contains(_searchQuery.toLowerCase());
+                  return matchesCategory && matchesSearch;
+                }).toList();
+
+                if (filteredDocs.isEmpty) {
+                  return const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 40.0),
+                    child: Center(
+                      child: Text('No guides match your search.', style: TextStyle(color: Colors.grey)),
+                    ),
+                  );
+                }
+
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: filteredDocs.length,
+                  itemBuilder: (context, index) {
+                    var data = filteredDocs[index].data() as Map<String, dynamic>;
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 12.0),
+                      child: GuideCard(
+                        name: data['name'] ?? '',
+                        rating: data['rating'] ?? '5.0',
+                        reviews: data['reviews'] ?? '(0 Reviews)',
+                        specialty: data['specialty'] ?? '',
+                        price: data['price'] ?? '₹0/hr',
+                      ),
+                    );
+                  },
                 );
-              }).toList(),
+              },
+            ),
           ],
         ),
       ),
@@ -177,20 +178,11 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
         type: BottomNavigationBarType.fixed,
         onTap: (index) {
           if (index == 1) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const ExploreScreen()),
-            );
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const ExploreScreen()));
           } else if (index == 2) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const BookingsScreen()),
-            );
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const BookingsScreen()));
           } else if (index == 4) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const ProfileScreen()),
-            );
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfileScreen()));
           }
         },
         items: const [
@@ -221,11 +213,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
               borderRadius: BorderRadius.circular(16),
               border: isSelected ? Border.all(color: const Color(0xFFD4AF37), width: 2) : null,
             ),
-            child: Icon(
-              icon,
-              color: const Color(0xFFD4AF37),
-              size: 28,
-            ),
+            child: Icon(icon, color: const Color(0xFFD4AF37), size: 28),
           ),
           const SizedBox(height: 6),
           Text(
@@ -274,7 +262,10 @@ class GuideCard extends StatelessWidget {
           CircleAvatar(
             radius: 28,
             backgroundColor: const Color(0xFF0F251F),
-            child: Text(name[0], style: const TextStyle(color: Color(0xFFD4AF37), fontWeight: FontWeight.bold, fontSize: 20)),
+            child: Text(
+              name.isNotEmpty ? name[0] : 'G',
+              style: const TextStyle(color: Color(0xFFD4AF37), fontWeight: FontWeight.bold, fontSize: 20),
+            ),
           ),
           const SizedBox(width: 12),
           Expanded(
