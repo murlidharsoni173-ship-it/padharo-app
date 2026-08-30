@@ -17,14 +17,13 @@ class GuideDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('$guideName Profile', style: const TextStyle(color: Colors.white)),
-        backgroundColor: const Color(0xFF0F251F),
-        iconTheme: const IconThemeData(color: Colors.white),
+        title: Text(guideName),
+        backgroundColor: const Color(0xFF1B4D3E),
+        foregroundColor: Colors.white,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -33,88 +32,53 @@ class GuideDetailScreen extends StatelessWidget {
                 radius: 50,
                 backgroundColor: const Color(0xFF0F251F),
                 child: Text(
-                  guideName[0],
-                  style: const TextStyle(fontSize: 40, color: Color(0xFFD4AF37), fontWeight: FontWeight.bold),
+                  guideName.isNotEmpty ? guideName[0] : 'G',
+                  style: const TextStyle(color: Color(0xFFD4AF37), fontSize: 40, fontWeight: FontWeight.bold),
                 ),
               ),
             ),
             const SizedBox(height: 20),
-            Center(
-              child: Text(
-                guideName,
-                style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Color(0xFF0F251F)),
-              ),
+            Text(
+              guideName,
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
-            Center(
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFD4AF37).withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  expertise,
-                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Color(0xFF0F251F)),
-                ),
-              ),
+            Text(
+              expertise,
+              style: const TextStyle(fontSize: 16, color: Colors.grey),
             ),
-            const SizedBox(height: 30),
-            const Divider(),
-            const SizedBox(height: 10),
+            const SizedBox(height: 8),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text('Rating:', style: TextStyle(fontSize: 16, color: Colors.grey)),
-                Text('⭐ $rating', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                const Icon(Icons.star, color: Colors.amber),
+                const SizedBox(width: 4),
+                Text(rating, style: const TextStyle(fontSize: 16)),
               ],
             ),
-            const SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text('Charges:', style: TextStyle(fontSize: 16, color: Colors.grey)),
-                Text(price, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF1B4D3E))),
-              ],
+            const SizedBox(height: 16),
+            Text(
+              'Price: $price',
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFF1B4D3E)),
             ),
             const Spacer(),
-            
-            // Confirm Booking Button
             SizedBox(
               width: double.infinity,
-              height: 52,
+              height: 50,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF0F251F),
-                  shape: RoundedRectangleBoard(
-                    borderRadius: BorderRadius.circular(12),
+                  backgroundColor: const Color(0xFF1B4D3E),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
                   ),
                 ),
                 onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text('Booking Successful! 🎉'),
-                      content: Text('Aapne $guideName ko successfully book kar liya hai. Guide aapse jald hi sampark karenge.'),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context); // Close Dialog
-                            Navigator.pop(context); // Go back to Dashboard
-                          },
-                          child: const Text('OK', style: TextStyle(color: Color(0xFF0F251F))),
-                        ),
-                      ],
-                    ),
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Booking request sent for $guideName!')),
                   );
                 },
-                child: const Text(
-                  'Confirm Booking',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFFD4AF37)),
-                ),
+                child: const Text('Confirm Booking', style: TextStyle(color: Colors.white, fontSize: 16)),
               ),
             ),
-            const SizedBox(height: 20),
           ],
         ),
       ),
