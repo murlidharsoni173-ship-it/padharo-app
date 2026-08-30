@@ -107,9 +107,11 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
               stream: FirebaseFirestore.instance.collection('guides').snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
+                  return const Padding(
                     padding: EdgeInsets.symmetric(vertical: 40),
-                    child: CircularProgressIndicator(color: Color(0xFF1B4D3E)),
+                    child: Center(
+                      child: CircularProgressIndicator(color: Color(0xFF1B4D3E)),
+                    ),
                   );
                 }
 
