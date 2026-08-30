@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'guide_detail_screen.dart';
 import 'profile_screen.dart';
 import 'explore_screen.dart';
+import 'bookings_screen.dart';
 
 class HomeDashboardScreen extends StatefulWidget {
   const HomeDashboardScreen({Key? key}) : super(key: key);
@@ -179,6 +180,11 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const ExploreScreen()),
+            );
+          } else if (index == 2) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const BookingsScreen()),
             );
           } else if (index == 4) {
             Navigator.push(
